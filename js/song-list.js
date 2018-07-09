@@ -1,26 +1,36 @@
 {
-        let view = {
-            el: '.songList-container',
-            template: `
+    let view = {
+        el: '.songList-container',
+        template: `
              <ul class="songList">
-                        <li>歌曲1</li>
-                        <li>歌曲1</li>
-                        <li>歌曲1</li>
-                        <li>歌曲1</li>
-                        <li>歌曲1</li>
-                        <li>歌曲1</li>
                     </ul>`,
-            render(data){
-                return $(this.el).html(this.template)
-            }
+        render(data) {
+            
+            let { songs } = data
+            let liList = songs.map((song) => $('<li></li>').text(song.name))
+            let $el = $(this.el)
+            $el.find('ul').empty()
+            liList.map((d) => {
+                $el.find('ul').append(d)
+            })
         }
-        let moudle = {}
-        let controller = {
-            init(view, moudle){
-                this.view = view
-                this.moudle = moudle
-                this.view.render(this.moudle.data)
-            }
-        }
-        controller.init(view, moudle)
     }
+    let model = {
+        data:{
+            songs:[]
+        }
+    }
+    let controller = {
+        init(view, model) {
+            this.view = view
+            this.model = model
+            this.view.render(this.model.data)
+            window.eventHub.on('create',(songData)=>{
+                //console.log(songData)
+                this.model.data.songs.push(songData)
+                this.view.render(this.model.data)
+            }
+            )}
+    }
+    controller.init(view, model)
+}

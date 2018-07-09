@@ -28,16 +28,19 @@
         },
         init() {
             this.$el = $(this.el)
+        },
+        reset() {
+            this.render({})
         }
     }
-    let moudle = {
+    let model = {
         data: {
             name: '',
             singer: '',
             url: '',
             id: '',
         },
-        creat(data) {
+        create(data) {
             var TestObject = AV.Object.extend('song');
             var Song = new TestObject();
             Song.set('name', data.name);
@@ -51,11 +54,11 @@
         }
     }
     let controller = {
-        init(view, moudle) {
+        init(view, model) {
             this.view = view
             this.view.init()
-            this.moudle = moudle
-            this.view.render(this.moudle.data)
+            this.model = model
+            this.view.render(this.model.data)
             this.bindEvent()
         },
         bindEvent() {
@@ -66,14 +69,15 @@
                 needs.map((string) => {
                     data[string] = this.view.$el.find(`[name="${string}"]`).val()
                 })
-                this.moudle.creat(data)
-                .then(() => {
-                    console.log(this.model.data)
-                    
+                this.model.create(data).then(() => {
+                    this.view.reset()
+                    let data = JSON.stringify(this.model.data)
+                    window.eventHub.emit('create', JSON.parse(data))
                 })
-
             })
+
+
         }
     }
-    controller.init(view, moudle)
+    controller.init(view, model)
 }

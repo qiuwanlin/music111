@@ -6,13 +6,13 @@
             return $(this.el).html(this.template)
         }
     }
-    let moudle = {}
+    let model = {}
     let controller = {
-        init(view, moudle) {
+        init(view, model) {
             this.view = view
-            this.moudle = moudle
-            this.view.render(this.moudle.data)
+            this.model = model
+            this.view.render(this.model.data)
         }
     }
-    controller.init(view, moudle)
+    controller.init(view, model)
 } 
