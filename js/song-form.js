@@ -44,9 +44,9 @@
             Song.set('singer', data.singer);
             Song.set('url', data.url);
 
-            Song.save().then((song) => {
-                let { id, attribute } = song
-                Object.assign(this.data, { id, ...attribute })
+            return Song.save().then((song) => {
+                let { id, attributes } = song
+                Object.assign(this.data, { id, ...attributes })
             });
         }
     }
@@ -67,6 +67,10 @@
                     data[string] = this.view.$el.find(`[name="${string}"]`).val()
                 })
                 this.moudle.creat(data)
+                .then(() => {
+                    console.log(this.model.data)
+                    
+                })
 
             })
         }
