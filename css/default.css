@@ -25,12 +25,19 @@ button{
     display: flex;
     flex-direction: column;
 }
-
 .page > aside > .newSong{
     margin: 1em;
     font-size: 2em;
     text-align: center;
 }
+.page > aside > .newSong.active{
+    margin: 1em;
+    font-size: 2em;
+    text-align: center;
+    background: #2E4E7E; 
+}
+
+
 .page > aside > .songList-container{
     border-top: 3px solid #23262C;
     flex-grow: 1;
@@ -45,8 +52,8 @@ button{
 .page > aside > .songList-container > .songList > li:nth-child(2n){
     background: #1B1D20;
 }
-.page > aside > .songList-container > .songList > li:hover{
-    background: #2E3033;
+.page > aside > .songList-container > .songList > li.active{
+    background: rgb(226, 234, 247);
 }
 .page > aside > .upArea{
     padding: .5em;
