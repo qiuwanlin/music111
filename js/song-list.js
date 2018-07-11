@@ -58,8 +58,17 @@
         bindEvents() {
             $(this.view.el).on('click', 'li', (e) => {
                 this.view.activeItem(e.currentTarget)
-                let songId = e.currentTarget.getAttribute('data - id')
-                window.eventHub.emit('select', { id: songId })
+                let songId = e.currentTarget.getAttribute('data-id')
+                let data
+                let songs = this.model.data.songs
+                for(let i =0;i<songs.length;i++){
+                    if(songs[i].id === songId){
+                        data = songs[i]
+                        break
+                    }
+                }
+                let object = JSON.parse(JSON.stringify(data))
+                window.eventHub.emit('select', object)
             })
         }
     }

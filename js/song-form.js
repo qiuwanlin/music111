@@ -11,7 +11,7 @@
                     </div>
                     <div class="row">
                         <label for="">歌手:
-                        <input name="singer" type="text">
+                        <input name="singer" type="text" >
                         </label>
                     </div>
                     <div class="row">
@@ -23,7 +23,7 @@
                         <button type="submit">保存</button>
                     </div>
                 </form>`,
-        render(data) {
+        render(data = {}) {
             $(this.el).html(this.template)
         },
         init() {
@@ -60,6 +60,12 @@
             this.model = model
             this.view.render(this.model.data)
             this.bindEvent()
+            window.eventHub.on('select',(data)=>{
+                
+                this.model.data = data
+                console.log(this.model.data)
+                this.view.render(this.model.data)
+            })
         },
         bindEvent() {
             this.view.$el.on('submit', 'form', (e) => {
