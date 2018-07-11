@@ -5,14 +5,14 @@
             <form action="">
                     <div class="songEditTitle">编辑歌曲信息</div>
                     <div class="row">
-                        <label for="">歌名:
-                        <input name="name" type="text" >
-                        </label>
+                        <label for="">歌名:</label>
+                        <input name="name" type="text" value="__name__">
+                        
                     </div>
                     <div class="row">
-                        <label for="">歌手:
-                        <input name="singer" type="text" >
-                        </label>
+                        <label for="">歌手:</label>
+                        <input name="singer" type="text" value="__singer__">
+                        
                     </div>
                     <div class="row">
                         <label for="">外链:
@@ -24,7 +24,12 @@
                     </div>
                 </form>`,
         render(data = {}) {
-            $(this.el).html(this.template)
+            let ppp = ['name','url','singer','id']
+            let html = this.template
+            ppp.map((string)=>{
+                html = html.replace(`__${string}__`,data[string] || '')
+            })
+            $(this.el).html(html)
         },
         init() {
             this.$el = $(this.el)
