@@ -2,8 +2,7 @@
     let view = {
         el: '.page > main',
         template: `
-            <form action="">
-                    <div class="songEditTitle">编辑歌曲信息</div>
+            <form class="form">
                     <div class="row">
                         <label for="">歌名:</label>
                         <input name="name" type="text" value="__name__">
@@ -24,12 +23,17 @@
                     </div>
                 </form>`,
         render(data = {}) {
-            let ppp = ['name','url','singer','id']
+            let ppp = ['name', 'url', 'singer', 'id']
             let html = this.template
-            ppp.map((string)=>{
-                html = html.replace(`__${string}__`,data[string] || '')
+            ppp.map((string) => {
+                html = html.replace(`__${string}__`, data[string] || '')
             })
             $(this.el).html(html)
+            if (data.id) {
+                $(this.el).prepend('<h1>编辑歌曲</h1>')
+            } else {
+                $(this.el).prepend('<h1>新建歌曲</h1>')
+            }
         },
         init() {
             this.$el = $(this.el)
@@ -40,10 +44,7 @@
     }
     let model = {
         data: {
-            name: '',
-            singer: '',
-            url: '',
-            id: '',
+            name: '', singer: '', url: '', id: '',
         },
         create(data) {
             var TestObject = AV.Object.extend('song');
@@ -65,10 +66,14 @@
             this.model = model
             this.view.render(this.model.data)
             this.bindEvent()
-            window.eventHub.on('select',(data)=>{
-                
+            window.eventHub.on('select', (data) => {
                 this.model.data = data
-                console.log(this.model.data)
+                this.view.render(this.model.data)
+            })
+            window.eventHub.on('new', () => {
+                this.model.data = {
+                    name: '', singer: '', url: '', id: ''
+                }
                 this.view.render(this.model.data)
             })
         },

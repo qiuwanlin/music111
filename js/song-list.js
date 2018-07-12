@@ -19,6 +19,9 @@
         activeItem(li) {
             let $li = $(li)
             $li.addClass('active').siblings('.active').removeClass('active')
+        },
+        clearActive(){
+            $(this.el).find('.active').removeClass('active')
         }
     }
     let model = {
@@ -42,10 +45,8 @@
             this.view.render(this.model.data)
             this.getAllSongs()
             this.bindEvents()
-            window.eventHub.on('create', (songData) => {
-                this.model.data.songs.push(songData)
-                this.view.render(this.model.data)
-            })
+            this.bindEventHub()
+            
             this.model.find().then(() => {
                 this.view.render(this.model.data)
             })
@@ -69,6 +70,15 @@
                 }
                 let object = JSON.parse(JSON.stringify(data))
                 window.eventHub.emit('select', object)
+            })
+        },
+        bindEventHub(){
+            window.eventHub.on('create', (songData) => {
+                this.model.data.songs.push(songData)
+                this.view.render(this.model.data)
+            })
+            window.eventHub.on('new',()=>{
+                this.view.clearActive()
             })
         }
     }
