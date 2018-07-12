@@ -46,6 +46,16 @@
         data: {
             name: '', singer: '', url: '', id: '',
         },
+        updata(data){
+            var s = AV.Object.createWithoutData('song', this.data.id)
+            s.set('name', data.name)
+            s.set('singer', data.singer)
+            s.set('url', data.url)
+            return s.save().then((response)=>{
+                Object.assign(this.data,data)
+                return response
+            })
+        },
         create(data) {
             var TestObject = AV.Object.extend('song');
             var Song = new TestObject();
@@ -96,27 +106,21 @@
             needs.map((string) => {
                 data[string] = this.view.$el.find(`[name="${string}"]`).val()
             })
-            var s = AV.Object.createWithoutData('song', this.model.data.id)
-            s.set('name', data.name)
-            s.set('singer', data.singer)
-            s.set('url', data.url)
-            s.save()
-
+            this.model.updata(data).then(()=>{
+                alert('修改成功')
+                window.eventHub.emit('update',JSON.parse(JSON.stringify(this.model.data)))
+            })
         },
         bindEvent() {
             this.view.$el.on('submit', 'form', (e) => {
                 e.preventDefault()
-
                 if (this.model.data.id) {
                     this.update()
                 } else {
                     this.create()
-                    console.log(1)
                 }
                 return
             })
-
-
         }
     }
     controller.init(view, model)
