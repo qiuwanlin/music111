@@ -70,26 +70,50 @@
                 this.model.data = data
                 this.view.render(this.model.data)
             })
-            window.eventHub.on('new', () => {
-                this.model.data = {
+            window.eventHub.on('new', (data) => {
+                data = data || {
                     name: '', singer: '', url: '', id: ''
                 }
+                this.model.data = data
                 this.view.render(this.model.data)
             })
+        },
+        create() {
+            let needs = 'name singer url'.split(' ')
+            let data = {}
+            needs.map((string) => {
+                data[string] = this.view.$el.find(`[name="${string}"]`).val()
+            })
+            this.model.create(data).then(() => {
+                this.view.reset()
+                let data = JSON.stringify(this.model.data)
+                window.eventHub.emit('create', JSON.parse(data))
+            })
+        },
+        update() {
+            let needs = 'name singer url'.split(' ')
+            let data = {}
+            needs.map((string) => {
+                data[string] = this.view.$el.find(`[name="${string}"]`).val()
+            })
+            var s = AV.Object.createWithoutData('song', this.model.data.id)
+            s.set('name', data.name)
+            s.set('singer', data.singer)
+            s.set('url', data.url)
+            s.save()
+
         },
         bindEvent() {
             this.view.$el.on('submit', 'form', (e) => {
                 e.preventDefault()
-                let needs = 'name singer url'.split(' ')
-                let data = {}
-                needs.map((string) => {
-                    data[string] = this.view.$el.find(`[name="${string}"]`).val()
-                })
-                this.model.create(data).then(() => {
-                    this.view.reset()
-                    let data = JSON.stringify(this.model.data)
-                    window.eventHub.emit('create', JSON.parse(data))
-                })
+
+                if (this.model.data.id) {
+                    this.update()
+                } else {
+                    this.create()
+                    console.log(1)
+                }
+                return
             })
 
 
