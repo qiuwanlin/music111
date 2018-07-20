@@ -4,31 +4,36 @@
         template: `
             <form class="form">
                     <div class="row">
-                        <label for="">歌名:</label>
+                        <label>歌名:</label>
                         <input name="name" type="text" value="__name__">
                         
                     </div>
                     <div class="row">
-                        <label for="">歌手:</label>
+                        <label>歌手:</label>
                         <input name="singer" type="text" value="__singer__">
                         
                     </div>
                     <div class="row">
-                        <label for="">外链:
+                        <label>外链:
                         <input name="url" type="text" value="__url__">
                         </label>
                     </div>
                     <div class="row">
-                        <label for="">封面:
+                        <label>封面:
                         <input name="cover" type="text" value="__cover__">
                         </label>
+                    </div>
+                    <div class="row">
+                        <label>歌词:
+                        </label>
+                        <textarea cols=40 rows=20 name="lyrics">__lyrics__</textarea>
                     </div>
                     <div class="row">
                         <button type="submit">保存</button>
                     </div>
                 </form>`,
         render(data = {}) {
-            let ppp = ['name', 'url', 'singer', 'id', 'cover']
+            let ppp = ['name', 'url', 'singer', 'id', 'cover','lyrics']
             let html = this.template
             ppp.map((string) => {
                 html = html.replace(`__${string}__`, data[string] || '')
@@ -49,7 +54,7 @@
     }
     let model = {
         data: {
-            name: '', singer: '', url: '', id: '', cover:''
+            name: '', singer: '', url: '', id: '', cover:'',lyrics:''
         },
         updata(data){
             var s = AV.Object.createWithoutData('song', this.data.id)
@@ -57,6 +62,7 @@
             s.set('singer', data.singer)
             s.set('url', data.url)
             s.set('cover', data.cover)
+            s.set('lyrics', data.lyrics)
             return s.save().then((response)=>{
                 Object.assign(this.data,data)
                 return response
@@ -69,6 +75,7 @@
             Song.set('singer', data.singer);
             Song.set('url', data.url);
             Song.set('cover', data.cover);
+            Song.set('lyrics', data.lyrics)
 
             return Song.save().then((song) => {
                 let { id, attributes } = song
@@ -89,14 +96,14 @@
             })
             window.eventHub.on('new', (data) => {
                 data = data || {
-                    name: '', singer: '', url: '', id: '',cover:''
+                    name: '', singer: '', url: '', id: '',cover:'',lyrics:''
                 }
                 this.model.data = data
                 this.view.render(this.model.data)
             })
         },
         create() {
-            let needs = 'name singer url cover'.split(' ')
+            let needs = 'name singer url cover lyrics'.split(' ')
             let data = {}
             needs.map((string) => {
                 data[string] = this.view.$el.find(`[name="${string}"]`).val()
@@ -108,7 +115,7 @@
             })
         },
         update() {
-            let needs = 'name singer url cover'.split(' ')
+            let needs = 'name singer url cover lyrics'.split(' ')
             let data = {}
             needs.map((string) => {
                 data[string] = this.view.$el.find(`[name="${string}"]`).val()
