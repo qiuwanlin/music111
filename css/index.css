@@ -42,11 +42,12 @@ body{
     background: #D43C33;
     padding: 17px 10px;
   }
-  section.topbar .logo>svg{
-    width: 142px;height: 25px;
-    vertical-align: top;
-  
-  }
+  .topbar>.logo >h1{
+    display: inline-block;
+    color: #ffffff;
+    margin-left: 3vw;
+}
+
   section.topbar > a{
     color: white;
     display: inline-block;
@@ -88,8 +89,7 @@ body{
   .tabs-nav >li.active{
     color: #D43C33;
   }
-  .tabs-nav >li.active>.text{ 
-  }
+
   .tabs-nav >li.active>.text::after{
     content: '';
     position: absolute;
@@ -117,8 +117,6 @@ body{
     display: table;
   }
   
-  section.playlists{
-  }
   section.playlists > ol.songs{
     display: flex;
     flex-wrap: wrap;

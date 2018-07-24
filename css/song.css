@@ -69,7 +69,9 @@
 .song-description .lyric{
 	height: 27vh;
     margin-top: 3vw;
-	overflow: hidden;
+    overflow: hidden;
+    
+    box-shadow:0px -17px 25px -12px hsl(0, 0%, 70%) inset;
 }
 .song-description p.active{
 	color: rgb(212, 97, 97);
@@ -123,7 +125,6 @@
 
 .process .process-wrap{
     overflow: hidden;
-    
     padding: 10px 4px;
 	margin: 0px 38px 0px 48px;
 	top: 80%;
@@ -168,3 +169,4 @@
     top: 5px;
     left: 6px;
 }
+
