@@ -24,7 +24,7 @@
       }
     },
     initlrc(data) {
-      let { song } = data
+      let { song } = data//let  song  = data.song
       this.$el.find('.song-description>h1').text(song.name)
       let { lyrics } = song
       lyrics.split('\n').map((string) => {
